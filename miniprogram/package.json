@@ -1,0 +1,13 @@
+{
+  "name": "miniprogram",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dayjs": "^1.11.13",
+    "tdesign-miniprogram": "^1.8.0"
+  }
+}

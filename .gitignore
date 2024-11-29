@@ -1,0 +1,9 @@
+node_modules
+miniprogram_npm
+dist
+project.private.config
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
