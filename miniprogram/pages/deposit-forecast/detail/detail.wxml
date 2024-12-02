@@ -1,0 +1,37 @@
+<!-- pages/deposit-forcast/deposit-forcast.wxml -->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="info-card">
+    <t-row gutter="16">
+      <t-col span="24" class="first-row">
+        <text>当前净资产：{{ cashSurplusSum }}</text>
+      </t-col>
+      <t-col span="12">
+        <text>月支出：{{ perMonthCostSum }}</text>
+      </t-col>
+      <t-col span="12">
+        <text>月收入：{{ income }}</text>
+      </t-col>
+      <t-col span="12">
+        <text>月剩余：{{ predictSurplusMonthly }}</text>
+      </t-col>
+    </t-row>
+  </view>
+  <view class="info-card">
+    <t-row gutter="16">
+      <t-col span="24" class="first-row">
+        <text>目标日期：{{ endTime }}</text>
+      </t-col>
+      <t-col span="12">
+        <text>剩余月份数：{{ monthsNum }}个月</text>
+      </t-col>
+      <t-col span="12">
+        <text>剩余天数：{{ daysNum }}天</text>
+      </t-col>
+    </t-row>
+  </view>
+  <view>
+    <view wx:for="{{ timeSurplusList }}" wx:key="time" wx:for-item="item">
+      <t-cell title="{{item.surplus}}" hover note="{{item.time}}" />
+    </view>
+  </view>
+</scroll-view>

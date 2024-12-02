@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/deposit-forecast/list/list",
+    "pages/deposit-forecast/detail/detail",
     "pages/logs/logs"
   ],
   "window": {
