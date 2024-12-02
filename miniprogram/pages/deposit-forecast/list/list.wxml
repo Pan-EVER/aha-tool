@@ -1,0 +1,18 @@
+<!-- pages/deposit-forecast/list/list.wxml -->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view wx:if="{{forecastList.length}}">
+    <view class="info-card" wx:for="{{forecastList}}" wx:key="id" wx:for-item="item" data-id="{{item.id}}" bind:tap="goDetail">
+      <t-row gutter="16">
+        <t-col span="24" class="first-row">
+          <text>{{item.name}}</text>
+        </t-col>
+        <t-col span="12">
+          <text>{{item.remark}}</text>
+        </t-col>
+      </t-row>
+    </view>
+  </view>
+  <t-empty wx:else icon="info-circle-filled" description="暂无数据" />
+  <view>
+  </view>
+</scroll-view>
