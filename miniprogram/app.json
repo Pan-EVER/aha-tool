@@ -38,6 +38,11 @@
     "t-back-top": "tdesign-miniprogram/back-top/back-top",
     "t-col": "tdesign-miniprogram/col/col",
     "t-row": "tdesign-miniprogram/row/row",
-    "t-empty": "tdesign-miniprogram/empty/empty"
+    "t-empty": "tdesign-miniprogram/empty/empty",
+    "t-fab": "tdesign-miniprogram/fab/fab",
+    "t-popup": "tdesign-miniprogram/popup/popup",
+    "t-input": "tdesign-miniprogram/input/input",
+    "t-dialog": "tdesign-miniprogram/dialog/dialog",
+     "t-message": "tdesign-miniprogram/message/message"
   }
 }
