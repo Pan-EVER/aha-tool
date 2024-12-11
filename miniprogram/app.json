@@ -28,7 +28,7 @@
       "sdkVersionEnd": "15.255.255"
     }
   },
-  "componentFramework": "glass-easel",
+  "componentFramework": "exparser",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
   "usingComponents": {
@@ -43,6 +43,8 @@
     "t-popup": "tdesign-miniprogram/popup/popup",
     "t-input": "tdesign-miniprogram/input/input",
     "t-dialog": "tdesign-miniprogram/dialog/dialog",
-     "t-message": "tdesign-miniprogram/message/message"
+    "t-message": "tdesign-miniprogram/message/message",
+    "t-swipe-cell": "tdesign-miniprogram/swipe-cell/swipe-cell",
+    "t-icon": "tdesign-miniprogram/icon/icon"
   }
 }

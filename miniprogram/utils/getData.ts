@@ -20,6 +20,17 @@ export const addForecast = (data) => {
   }
 };
 
+export const deleteForecast = (id: string) =>
+  new Promise((resolve, reject) => {
+    if (!id) {
+      reject("id必传");
+    }
+    const originList = getForecastList() || [];
+    const filterList = originList.filter((ele) => ele.id !== id);
+    wx.setStorageSync("forecastList", filterList);
+    resolve("success");
+  });
+
 export const getForecastList = () => {
   return wx.getStorageSync("forecastList");
 };

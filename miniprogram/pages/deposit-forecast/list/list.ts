@@ -1,5 +1,9 @@
 // pages/deposit-forecast/list/list.ts
-import { getForecastList, addForecast } from "../../../utils/getData";
+import {
+  getForecastList,
+  addForecast,
+  deleteForecast,
+} from "../../../utils/getData";
 import Message from "tdesign-miniprogram/message/index";
 
 Page({
@@ -40,6 +44,11 @@ Page({
     this.setData({
       showAddDialog: true,
     });
+  },
+  async onDelete(event: any) {
+    const id = event.currentTarget.dataset.id;
+    await deleteForecast(id);
+    this.refreshList()
   },
   onFormChange(e: any) {
     const prop = e.target.dataset.prop as "name" | "remark";

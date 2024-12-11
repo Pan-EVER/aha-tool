@@ -1,15 +1,13 @@
 <!-- pages/deposit-forecast/list/list.wxml -->
-<scroll-view class="scrollarea" scroll-y type="list">
+<scroll-view class="scrollarea forecast-list" scroll-y type="list">
   <view wx:if="{{forecastList.length}}">
-    <view class="info-card" wx:for="{{forecastList}}" wx:key="id" wx:for-item="item" data-id="{{item.id}}" bind:tap="goDetail">
-      <t-row gutter="16">
-        <t-col span="24" class="first-row">
-          <text>{{item.name}}</text>
-        </t-col>
-        <t-col span="12">
-          <text>{{item.remark}}</text>
-        </t-col>
-      </t-row>
+    <view class="item-container" wx:for="{{forecastList}}" wx:key="id" wx:for-item="item" data-id="{{item.id}}" bind:tap="goDetail">
+      <t-swipe-cell>
+        <t-cell title="{{item.name}}" description="{{item.remark}}" bordered="{{false}}" />
+        <view slot="right" class="btn delete-btn" data-id="{{item.id}}" catch:tap="onDelete">
+          删除
+        </view>
+      </t-swipe-cell>
     </view>
   </view>
   <t-empty wx:else icon="info-circle-filled" description="暂无数据" />
