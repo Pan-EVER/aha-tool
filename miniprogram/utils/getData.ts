@@ -43,3 +43,17 @@ export const getForecastDetail = (id: string) => {
   }
   return null;
 };
+
+export const updateForecast = (data) =>
+  new Promise((resolve, reject) => {
+    const { id } = data;
+    if (!id) {
+      reject("id必传");
+    }
+    const originList = getForecastList() || [];
+    const list = originList.map((originEle) =>
+      originEle.id === id ? data : originEle
+    );
+    wx.setStorageSync("forecastList", list);
+    resolve("success");
+  });

@@ -2,7 +2,8 @@
   "pages": [
     "pages/deposit-forecast/list/list",
     "pages/deposit-forecast/detail/detail",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/deposit-forecast/surplus-list/surplus-list"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -45,6 +46,12 @@
     "t-dialog": "tdesign-miniprogram/dialog/dialog",
     "t-message": "tdesign-miniprogram/message/message",
     "t-swipe-cell": "tdesign-miniprogram/swipe-cell/swipe-cell",
-    "t-icon": "tdesign-miniprogram/icon/icon"
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-action-sheet": "tdesign-miniprogram/action-sheet/action-sheet",
+    "t-date-time-picker": "tdesign-miniprogram/date-time-picker/date-time-picker",
+    "t-collapse": "tdesign-miniprogram/collapse/collapse",
+    "t-collapse-panel": "tdesign-miniprogram/collapse-panel/collapse-panel",
+    "t-radio": "tdesign-miniprogram/radio/radio",
+    "t-radio-group": "tdesign-miniprogram/radio-group/radio-group"
   }
 }

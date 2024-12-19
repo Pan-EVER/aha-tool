@@ -1,5 +1,9 @@
 <!-- pages/deposit-forcast/deposit-forcast.wxml -->
 <scroll-view class="scrollarea" scroll-y type="list">
+  <t-fab class="t-fab-btn" icon="edit" bind:click="onEdit" aria-label="编辑"></t-fab>
+  <t-action-sheet id="t-action-sheet" usingCustomNavbar bind:selected="onEditItemSelected" />
+  <t-date-time-picker auto-close title="选择开始日期" value="{{startTime}}" visible="{{startDateVisible}}" mode="date" format="YYYY-MM-DD" popup-props="{{popupProps}}" bindchange="onStartDateConfirm" bindcancel="hidePicker" />
+  <t-date-time-picker auto-close title="选择结束日期" value="{{endTime}}" visible="{{endDateVisible}}" mode="date" format="YYYY-MM-DD" popup-props="{{popupProps}}" bindchange="onEndDateConfirm" bindcancel="hidePicker" />
   <view class="info-card">
     <t-row gutter="16">
       <t-col span="24" class="first-row">
@@ -19,7 +23,7 @@
   <view class="info-card">
     <t-row gutter="16">
       <t-col span="24" class="first-row">
-        <text>目标日期：{{ endTime }}</text>
+        <text>时间范围：{{ startTime }}至{{ endTime }}</text>
       </t-col>
       <t-col span="12">
         <text>剩余月份数：{{ monthsNum }}个月</text>

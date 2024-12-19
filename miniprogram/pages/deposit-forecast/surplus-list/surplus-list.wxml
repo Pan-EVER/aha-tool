@@ -1,0 +1,57 @@
+<!-- pages/deposit-forecast/surplus-list.wxml -->
+<scroll-view class="scrollarea" scroll-y type="list">
+    <view class="info-card">
+        <t-row gutter="16">
+            <t-col span="24" class="first-row">
+                <text>净资产：{{ netAsset }}</text>
+            </t-col>
+            <t-col span="12">
+                <text>资产：{{ asset }}</text>
+            </t-col>
+            <t-col span="12">
+                <text>负债：{{ debt }}</text>
+            </t-col>
+        </t-row>
+    </view>
+    <t-collapse value="{{activeCollapse}}" bind:change="onCollapseChange">
+        <t-collapse-panel header="资产" value="{{0}}" expandIcon>
+            <t-swipe-cell wx:for="{{assetList}}" wx:key="label" wx:for-item="item">
+                <t-cell title="{{item.label}}" hover note="{{item.value}}" data-item="{{item}}" bind:tap="onEditAsset" />
+                <view slot="right" class="swipe-btn delete-btn" data-label="{{item.label}}" catch:tap="onDeleteAsset">
+                    删除
+                </view>
+            </t-swipe-cell>
+        </t-collapse-panel>
+        <t-collapse-panel header="负债" value="{{1}}" expandIcon>
+            <t-swipe-cell wx:for="{{debtList}}" wx:key="label" wx:for-item="item">
+                <t-cell title="{{item.label}}" hover note="{{item.value}}" data-item="{{item}}" bind:tap="onEditAsset" />
+                <view slot="right" class="swipe-btn delete-btn" data-label="{{item.label}}" catch:tap="onDeleteAsset">
+                    删除
+                </view>
+            </t-swipe-cell>
+        </t-collapse-panel>
+    </t-collapse>
+    <t-button class="add-btn" size="large" bind:tap="onAddAsset">添加资产</t-button>
+    <t-popup visible="{{popupOpen}}" placement="bottom" bind:visible-change="onVisibleChange">
+        <view class="block">
+            <view class="header">
+                <view class="btn btn--cancel" aria-role="button" bind:tap="onCancel">取消</view>
+                <view class="title">添加资产</view>
+                <view class="btn btn--confirm" aria-role="button" bind:tap="onConfirm">确定</view>
+            </view>
+            <view class="form-item">
+                <text class="custom-label">类型</text>
+                <t-radio-group borderless t-class="radio-box" value="{{assetType}}" bind:change="onAssetTypeChange">
+                    <t-radio block="{{false}}" label="资产" value="asset" />
+                    <t-radio block="{{false}}" label="负债" value="debt" />
+                </t-radio-group>
+            </view>
+            <t-input model:value="{{assetName}}" placeholder="请输入名称">
+                <view slot="label" class="custom-label">名称</view>
+            </t-input>
+            <t-input model:value="{{assetValue}}" placeholder="请输入数值">
+                <view slot="label" class="custom-label">数值</view>
+            </t-input>
+        </view>
+    </t-popup>
+</scroll-view>

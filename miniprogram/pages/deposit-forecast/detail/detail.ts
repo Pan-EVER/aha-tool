@@ -1,5 +1,8 @@
 // pages/deposit-forcast/deposit-forcast.ts
 const dayjs = require("dayjs");
+import ActionSheet, {
+  ActionSheetTheme,
+} from "tdesign-miniprogram/action-sheet/index";
 import { getForecastDetail } from "../../../utils/getData";
 
 interface PageData {
@@ -10,10 +13,12 @@ interface PageData {
   monthsNum: number;
   daysNum: number;
   timeSurplusList: Array<{ time: string; surplus: string }>;
+  [key: string]: any;
 }
 
 Page({
   data: {
+    pageQuery: {},
     income: 0,
     cashSurplusSum: 0,
     perMonthCostSum: 0,
@@ -21,12 +26,21 @@ Page({
     monthsNum: 0,
     daysNum: 0,
     timeSurplusList: [],
+    popupProps: {
+      usingCustomNavbar: true,
+    },
+    startDateVisible: false,
+    startTime: dayjs().format("YYYY-MM-DD"),
+    endDateVisible: false,
+    endTime: dayjs().format("YYYY-MM-DD"),
   } as PageData,
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(query) {
+    if (!query.id) return;
+    this.setData({ pageQuery: { ...query } });
     const detailData = getForecastDetail(query.id);
     if (detailData) {
       const { startTime, endTime, income, cashSurplusList, perMonthCostList } =
@@ -49,6 +63,8 @@ Page({
       });
 
       this.setData({
+        startTime,
+        endTime,
         income,
         cashSurplusSum,
         perMonthCostSum: Number(
@@ -101,5 +117,79 @@ Page({
     let sumRes = 0;
     sumRes = surplusSum + surplusMonthly * diffMonth;
     return sumRes.toFixed(2);
+  },
+
+  onEdit() {
+    ActionSheet.show({
+      theme: ActionSheetTheme.List,
+      selector: "#t-action-sheet",
+      context: this,
+      description: "请选择要编辑的项",
+      items: [
+        {
+          label: "月收入",
+          key: "income",
+        },
+        {
+          label: "净资产",
+          key: "surplusSum",
+        },
+        {
+          label: "月支出",
+          key: "cost",
+        },
+        {
+          label: "开始日期",
+          key: "startTime",
+        },
+        {
+          label: "结束日期",
+          key: "endTime",
+        },
+      ],
+    });
+  },
+  onEditItemSelected(e: any) {
+    const key = e.detail.selected.key;
+    console.log("startTime", this.data.startTime);
+
+    switch (key) {
+      case "startTime":
+        this.setData({ startDateVisible: true });
+        break;
+      case "endTime":
+        this.setData({ endDateVisible: true });
+        break;
+      case "surplusSum":
+        wx.navigateTo({
+          url: `/pages/deposit-forecast/surplus-list/surplus-list?id=${this.data.pageQuery.id}`,
+        });
+        break;
+      default:
+        break;
+    }
+    console.log("e", e);
+  },
+  hidePicker() {
+    this.setData({
+      startDateVisible: false,
+      endDateVisible: false,
+    });
+  },
+
+  onStartDateConfirm(e: any) {
+    const { value } = e.detail;
+    this.setData({
+      startDateVisible: false,
+      startTime: value,
+    });
+  },
+
+  onEndDateConfirm(e: any) {
+    const { value } = e.detail;
+    this.setData({
+      endDateVisible: false,
+      endTime: value,
+    });
   },
 });
