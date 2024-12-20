@@ -1,0 +1,36 @@
+<!-- pages/deposit-forecast/cost-list/cost-list.wxml -->
+<scroll-view class="scrollarea" scroll-y type="list">
+    <view class="info-card">
+        <t-row gutter="16">
+            <t-col span="24" class="first-row">
+                <text>支出：{{ costSum }}</text>
+            </t-col>
+        </t-row>
+    </view>
+    <t-collapse value="{{activeCollapse}}" bind:change="onCollapseChange">
+        <t-collapse-panel header="支出详情" value="{{0}}" expandIcon>
+            <t-swipe-cell wx:for="{{costList}}" wx:key="label" wx:for-item="item">
+                <t-cell title="{{item.label}}" hover note="{{item.value}}" data-item="{{item}}" bind:tap="onEditCost" />
+                <view slot="right" class="swipe-btn delete-btn" data-label="{{item.label}}" catch:tap="onDeleteCost">
+                    删除
+                </view>
+            </t-swipe-cell>
+        </t-collapse-panel>
+    </t-collapse>
+    <t-button class="add-btn" size="large" bind:tap="onAddCost">添加支出</t-button>
+    <t-popup visible="{{popupOpen}}" placement="bottom" bind:visible-change="onVisibleChange">
+        <view class="block">
+            <view class="header">
+                <view class="btn btn--cancel" aria-role="button" bind:tap="onCancel">取消</view>
+                <view class="title">添加支出</view>
+                <view class="btn btn--confirm" aria-role="button" bind:tap="onConfirm">确定</view>
+            </view>
+            <t-input model:value="{{costName}}" placeholder="请输入名称">
+                <view slot="label" class="custom-label">名称</view>
+            </t-input>
+            <t-input model:value="{{costValue}}" placeholder="请输入数值">
+                <view slot="label" class="custom-label">数值</view>
+            </t-input>
+        </view>
+    </t-popup>
+</scroll-view>

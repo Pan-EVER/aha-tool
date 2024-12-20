@@ -4,7 +4,8 @@
     "pages/deposit-forecast/detail/detail",
     "pages/logs/logs",
     "pages/deposit-forecast/surplus-list/surplus-list",
-    "pages/deposit-forecast/income-list/income-list"
+    "pages/deposit-forecast/income-list/income-list",
+    "pages/deposit-forecast/cost-list/cost-list"
   ],
   "window": {
     "navigationBarTextStyle": "black",

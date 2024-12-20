@@ -170,6 +170,11 @@ Page({
           url: `/pages/deposit-forecast/income-list/income-list?id=${this.data.pageQuery.id}`,
         });
         break;
+      case "cost":
+        wx.navigateTo({
+          url: `/pages/deposit-forecast/cost-list/cost-list?id=${this.data.pageQuery.id}`,
+        });
+        break;
       default:
         break;
     }
