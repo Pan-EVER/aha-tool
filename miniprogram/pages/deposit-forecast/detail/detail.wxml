@@ -13,7 +13,7 @@
         <text>月支出：{{ perMonthCostSum }}</text>
       </t-col>
       <t-col span="12">
-        <text>月收入：{{ income }}</text>
+        <text>月收入：{{ incomeSum }}</text>
       </t-col>
       <t-col span="12">
         <text>月剩余：{{ predictSurplusMonthly }}</text>

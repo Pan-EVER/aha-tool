@@ -1,25 +1,26 @@
 // pages/deposit-forcast/deposit-forcast.ts
-const dayjs = require("dayjs");
 import ActionSheet, {
   ActionSheetTheme,
 } from "tdesign-miniprogram/action-sheet/index";
-import { getForecastDetail } from "../../../utils/getData";
+import { getForecastDetail, updateForecast } from "../../../utils/getData";
 
+const dayjs = require("dayjs");
+const Decimal = require("decimal.js");
 interface PageData {
-  income: number;
+  incomeSum: number;
   cashSurplusSum: number;
   perMonthCostSum: number;
   predictSurplusMonthly: number;
   monthsNum: number;
   daysNum: number;
-  timeSurplusList: Array<{ time: string; surplus: string }>;
+  timeSurplusList: Array<{ time: string; surplus: number }>;
   [key: string]: any;
 }
 
 Page({
   data: {
     pageQuery: {},
-    income: 0,
+    incomeSum: 0,
     cashSurplusSum: 0,
     perMonthCostSum: 0,
     predictSurplusMonthly: 0,
@@ -34,22 +35,25 @@ Page({
     endDateVisible: false,
     endTime: dayjs().format("YYYY-MM-DD"),
   } as PageData,
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(query) {
-    if (!query.id) return;
-    this.setData({ pageQuery: { ...query } });
-    const detailData = getForecastDetail(query.id);
+  /** 更新页面状态 */
+  computePageState(id) {
+    const detailData = getForecastDetail(id);
     if (detailData) {
-      const { startTime, endTime, income, cashSurplusList, perMonthCostList } =
-        detailData;
+      const {
+        startTime,
+        endTime,
+        incomeList,
+        cashSurplusList,
+        perMonthCostList,
+      } = detailData;
       const monthsNum = this.monthsNum(startTime, endTime);
-      const cashSurplusSum = this.cashSurplusSum(cashSurplusList);
-      const predictSurplusMonthly = Number(
-        this.predictSurplusMonthly(income, perMonthCostList).toFixed(2)
-      );
+      const cashSurplusSum = this.calcListValueSum(cashSurplusList);
+      const incomeSum = this.calcListValueSum(incomeList);
+      const perMonthCostSum = this.calcListValueSum(perMonthCostList);
+      const predictSurplusMonthly = Decimal.sub(
+        incomeSum,
+        perMonthCostSum
+      ).toNumber();
 
       const list = new Array(monthsNum).fill(null).map((_, index) => {
         return {
@@ -63,13 +67,11 @@ Page({
       });
 
       this.setData({
-        startTime,
-        endTime,
-        income,
+        startTime: startTime || "-",
+        endTime: endTime || "-",
+        incomeSum,
         cashSurplusSum,
-        perMonthCostSum: Number(
-          this.perMonthCostSum(perMonthCostList).toFixed(2)
-        ),
+        perMonthCostSum,
         predictSurplusMonthly,
         monthsNum,
         daysNum: this.daysNum(startTime, endTime),
@@ -78,33 +80,29 @@ Page({
     }
     console.log("detailData", detailData);
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {},
-  /** 现金余额 */
-  cashSurplusSum(arr: Array<{ label: string; value: number }>) {
-    const sum = (arr || []).reduce((pre, cur) => pre + cur.value, 0);
-    // return 8942.18;
+  onLoad(query) {
+    if (!query.id) return;
+    this.setData({ pageQuery: { ...query } });
+    this.computePageState(query.id);
+  },
+  // 页面返回便更新数据
+  onShow() {
+    const { pageQuery } = this.data;
+    if (!pageQuery.id) return;
+    this.computePageState(pageQuery.id);
+  },
+  calcListValueSum(list: Array<{ label: string; value: number }>) {
+    const sum = (list || []).reduce(
+      (pre, cur) => Decimal.add(pre, cur.value || 0).toNumber(),
+      0
+    );
     return sum;
-  },
-  /** 每月固定支出 */
-  perMonthCostSum(arr: Array<{ label: string; value: number }>) {
-    return (arr || []).reduce((pre, cur) => pre + cur.value, 0);
-  },
-  /** 每月盈余估算 */
-  predictSurplusMonthly(
-    income: number,
-    arr: Array<{ label: string; value: number }>
-  ) {
-    return income - this.perMonthCostSum(arr);
   },
   monthsNum(startTime: string, endTime: string) {
     return dayjs(endTime).diff(dayjs(startTime), "month");
   },
   daysNum(startTime: string, endTime: string) {
-    return dayjs(endTime).diff(dayjs(startTime), "day");
+    return dayjs(endTime).diff(dayjs(startTime), "day") || "-";
   },
   getTime(startTime: string, diffMonth: number) {
     return dayjs(startTime).add(diffMonth, "month").format("YYYY-MM-DD");
@@ -115,8 +113,11 @@ Page({
     diffMonth: number
   ) {
     let sumRes = 0;
-    sumRes = surplusSum + surplusMonthly * diffMonth;
-    return sumRes.toFixed(2);
+    sumRes = new Decimal(surplusMonthly)
+      .mul(diffMonth)
+      .add(surplusSum)
+      .toNumber();
+    return sumRes;
   },
 
   onEdit() {
@@ -151,8 +152,6 @@ Page({
   },
   onEditItemSelected(e: any) {
     const key = e.detail.selected.key;
-    console.log("startTime", this.data.startTime);
-
     switch (key) {
       case "startTime":
         this.setData({ startDateVisible: true });
@@ -178,7 +177,6 @@ Page({
       default:
         break;
     }
-    console.log("e", e);
   },
   hidePicker() {
     this.setData({
@@ -187,19 +185,35 @@ Page({
     });
   },
 
-  onStartDateConfirm(e: any) {
+  async onStartDateConfirm(e: any) {
     const { value } = e.detail;
+    const { pageQuery } = this.data;
     this.setData({
       startDateVisible: false,
-      startTime: value,
     });
+    if (pageQuery.id) {
+      const detailData = getForecastDetail(pageQuery.id);
+      await updateForecast({
+        ...detailData,
+        startTime: value,
+      });
+      this.computePageState(pageQuery.id);
+    }
   },
 
-  onEndDateConfirm(e: any) {
+  async onEndDateConfirm(e: any) {
     const { value } = e.detail;
+    const { pageQuery } = this.data;
     this.setData({
       endDateVisible: false,
-      endTime: value,
     });
+    if (pageQuery.id) {
+      const detailData = getForecastDetail(pageQuery.id);
+      await updateForecast({
+        ...detailData,
+        endTime: value,
+      });
+      this.computePageState(pageQuery.id);
+    }
   },
 });

@@ -1,6 +1,7 @@
 // pages/deposit-forecast/surplus-list.ts
 import { getForecastDetail, updateForecast } from "../../../utils/getData";
 
+const Decimal = require("decimal.js");
 Page({
   data: {
     pageQuery: {},
@@ -15,7 +16,7 @@ Page({
     assetType: "asset", // debt | asset
     assetValue: 0,
     assetName: "",
-    activeCollapse: [],
+    activeCollapse: [0, 1],
   },
   updateDetail(id) {
     const detailData = getForecastDetail(id);
@@ -30,15 +31,21 @@ Page({
         tempDebtList.push(ele);
       }
     });
-    const asset = tempAssetList.reduce((pre, cur) => (cur.value || 0) + pre, 0);
-    const debt = tempDebtList.reduce((pre, cur) => (cur.value || 0) + pre, 0);
-    const netAsset = asset + debt;
+    const asset = tempAssetList.reduce(
+      (pre, cur) => Decimal.add(cur.value || 0, pre).toNumber(),
+      0
+    );
+    const debt = tempDebtList.reduce(
+      (pre, cur) => Decimal.add(cur.value || 0, pre).toNumber(),
+      0
+    );
+    const netAsset = Decimal.add(asset, debt).toNumber();
     this.setData({
       assetList: tempAssetList,
       debtList: tempDebtList,
       asset,
-      debt: debt.toFixed(2),
-      netAsset: netAsset.toFixed(2),
+      debt: debt,
+      netAsset: netAsset,
     });
   },
   onLoad(query) {
