@@ -165,6 +165,11 @@ Page({
           url: `/pages/deposit-forecast/surplus-list/surplus-list?id=${this.data.pageQuery.id}`,
         });
         break;
+      case "income":
+        wx.navigateTo({
+          url: `/pages/deposit-forecast/income-list/income-list?id=${this.data.pageQuery.id}`,
+        });
+        break;
       default:
         break;
     }

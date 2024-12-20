@@ -3,7 +3,8 @@
     "pages/deposit-forecast/list/list",
     "pages/deposit-forecast/detail/detail",
     "pages/logs/logs",
-    "pages/deposit-forecast/surplus-list/surplus-list"
+    "pages/deposit-forecast/surplus-list/surplus-list",
+    "pages/deposit-forecast/income-list/income-list"
   ],
   "window": {
     "navigationBarTextStyle": "black",
