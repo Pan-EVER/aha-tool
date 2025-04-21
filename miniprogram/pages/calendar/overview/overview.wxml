@@ -9,5 +9,5 @@
     <text>{{selectDateStr}}</text>
     <text>展会列表</text>
   </view>
-  <t-cell wx:for="{{selectDateDetailList}}" wx:for-item="item" wx:key="{{name}}" title="{{item.name}}" description="{{item.dateRange}}" note="{{item.address}}" align="top" hover bordered="{{true}}" />
+  <t-cell wx:for="{{selectDateDetailList}}" wx:key="name" title="{{item.name}}" description="{{item.dateRange}}" note="{{item.address}}" align="top" hover bordered="{{true}}" />
 </scroll-view>
