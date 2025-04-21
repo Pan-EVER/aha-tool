@@ -47,6 +47,15 @@ Component({
       });
     },
   },
+  lifetimes: {
+    ready() {
+      this.handleSelect({
+        detail: {
+          value: Date.now(),
+        },
+      });
+    },
+  },
 
   /**
    * 组件的方法列表
