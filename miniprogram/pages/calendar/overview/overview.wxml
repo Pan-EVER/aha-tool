@@ -1,0 +1,13 @@
+<!-- pages/calendar/overview/overview.wxml -->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view>
+    <text>{{allAddressString}}</text>
+  </view>
+  <t-calendar title="总览" use-popup="{{false}}" value="{{selectDate}}" minDate="{{minDate}}" maxDate="{{maxDate}}" data-type="multiple" format="{{formatDayCell}}" bind:select="handleSelect" />
+  <view class="flex-row">
+    <t-icon name="bulletpoint" size="48rpx" />
+    <text>{{selectDateStr}}</text>
+    <text>展会列表</text>
+  </view>
+  <t-cell wx:for="{{selectDateDetailList}}" wx:for-item="item" wx:key="{{name}}" title="{{item.name}}" description="{{item.dateRange}}" note="{{item.address}}" align="top" hover bordered="{{true}}" />
+</scroll-view>

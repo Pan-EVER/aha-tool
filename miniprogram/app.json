@@ -5,7 +5,8 @@
     "pages/logs/logs",
     "pages/deposit-forecast/surplus-list/surplus-list",
     "pages/deposit-forecast/income-list/income-list",
-    "pages/deposit-forecast/cost-list/cost-list"
+    "pages/deposit-forecast/cost-list/cost-list",
+    "pages/calendar/overview/overview"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -16,6 +17,10 @@
       {
         "pagePath": "pages/deposit-forecast/list/list",
         "text": "推算助手"
+      },
+      {
+        "pagePath": "pages/calendar/overview/overview",
+        "text": "日历"
       },
       {
         "pagePath": "pages/logs/logs",
@@ -54,6 +59,7 @@
     "t-collapse": "tdesign-miniprogram/collapse/collapse",
     "t-collapse-panel": "tdesign-miniprogram/collapse-panel/collapse-panel",
     "t-radio": "tdesign-miniprogram/radio/radio",
-    "t-radio-group": "tdesign-miniprogram/radio-group/radio-group"
+    "t-radio-group": "tdesign-miniprogram/radio-group/radio-group",
+    "t-calendar": "tdesign-miniprogram/calendar/calendar"
   }
 }
